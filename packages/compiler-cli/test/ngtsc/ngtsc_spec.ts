@@ -8648,34 +8648,6 @@ runInEachFileSystem((os: string) => {
         expect(trim(jsContents)).toContain(trim(hostBindingsFn));
       });
 
-      it('should generate sanitizers for URL properties in SVG script fn in Component', () => {
-        env.write(
-          'test.ts',
-          `
-            import {Component} from '@angular/core';
-
-            @Component({
-              selector: 'test-cmp',
-              template: \`
-                <svg>
-                  <script [attr.xlink:href]="attr" [attr.href]="attr"></script>
-                </svg>
-              \`,
-            })
-            export class TestCmp {
-              attr = './script.js';
-            }
-          `,
-        );
-
-        env.driveMain();
-
-        const jsContents = env.getContents('test.js');
-        expect(jsContents).toContain(
-          'i0.ɵɵattribute("href", ctx.attr, i0.ɵɵsanitizeResourceUrl, "xlink")("href", ctx.attr, i0.ɵɵsanitizeResourceUrl);',
-        );
-      });
-
       it('should not generate sanitizers for URL properties in hostBindings fn in Component', () => {
         env.write(
           `test.ts`,
@@ -9789,7 +9761,8 @@ runInEachFileSystem((os: string) => {
           import {Directive} from '@angular/core';
 
           @Directive({
-            selector: '[test]'
+            selector: '[test]',
+            standalone: false,
           })
           class TestDirective {}
         `,
@@ -9801,7 +9774,46 @@ runInEachFileSystem((os: string) => {
         expect(jsContents).toContain('Directive({');
       });
 
+      it('should emit directive definitions for non-exported standalone classes by default', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Directive} from '@angular/core';
+
+          @Directive({
+            selector: '[test]'
+          })
+          class TestDirective {}
+        `,
+        );
+        env.driveMain();
+        const jsContents = env.getContents('test.js');
+
+        expect(jsContents).toContain('defineDirective(');
+      });
+
       it('should not emit component definitions for non-exported classes if configured', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Component} from '@angular/core';
+
+          @Component({
+            selector: 'test',
+            template: 'hello',
+            standalone: false,
+          })
+          class TestComponent {}
+        `,
+        );
+        env.driveMain();
+        const jsContents = env.getContents('test.js');
+
+        expect(jsContents).not.toContain('defineComponent(');
+        expect(jsContents).toContain('Component({');
+      });
+
+      it('should emit component definitions for non-exported standalone classes by default', () => {
         env.write(
           'test.ts',
           `
@@ -9817,8 +9829,7 @@ runInEachFileSystem((os: string) => {
         env.driveMain();
         const jsContents = env.getContents('test.js');
 
-        expect(jsContents).not.toContain('defineComponent(');
-        expect(jsContents).toContain('Component({');
+        expect(jsContents).toContain('defineComponent(');
       });
 
       it('should not emit module definitions for non-exported classes if configured', () => {
@@ -9840,6 +9851,44 @@ runInEachFileSystem((os: string) => {
         expect(jsContents).toContain('NgModule({');
       });
 
+      it('should not emit pipe definitions for non-exported classes if configured', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Pipe} from '@angular/core';
+
+          @Pipe({
+            name: 'test',
+            standalone: false,
+          })
+          class TestPipe {}
+        `,
+        );
+        env.driveMain();
+        const jsContents = env.getContents('test.js');
+
+        expect(jsContents).not.toContain('definePipe(');
+        expect(jsContents).toContain('Pipe({');
+      });
+
+      it('should emit pipe definitions for non-exported standalone classes by default', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Pipe} from '@angular/core';
+
+          @Pipe({
+            name: 'test'
+          })
+          class TestPipe {}
+        `,
+        );
+        env.driveMain();
+        const jsContents = env.getContents('test.js');
+
+        expect(jsContents).toContain('definePipe(');
+      });
+
       it('should still compile a class that is indirectly exported', () => {
         env.write(
           'test.ts',
@@ -9849,6 +9898,7 @@ runInEachFileSystem((os: string) => {
           @Component({
             selector: 'test-cmp',
             template: 'Test Cmp',
+            standalone: false,
           })
           class TestCmp {}
 
@@ -11300,6 +11350,24 @@ runInEachFileSystem((os: string) => {
         expect(dtsContents).toContain(
           'static ngAcceptInputType_element: HTMLElement | i0.ElementRef<HTMLElement>;',
         );
+      });
+
+      it('should compile an input with a transform function and whose name needs to be quoted', () => {
+        env.write(
+          '/test.ts',
+          `
+          import {Directive, Input} from '@angular/core';
+
+          @Directive({selector: '[dir]'})
+          export class Dir {
+            @Input({transform: (value: string) => value}) 'aria-label': string = '';
+          }
+        `,
+        );
+
+        env.driveMain();
+        const dtsContents = env.getContents('test.d.ts');
+        expect(dtsContents).toContain('static "ngAcceptInputType_aria-label": string;');
       });
     });
 

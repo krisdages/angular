@@ -322,6 +322,12 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             status: 'updated',
           },
           {
+            label: 'Lazy loading services',
+            path: 'guide/di/lazy-loading-services',
+            contentPath: 'guide/di/lazy-loading-services',
+            status: 'new',
+          },
+          {
             label: 'Defining dependency providers',
             path: 'guide/di/defining-dependency-providers',
             contentPath: 'guide/di/defining-dependency-providers',
@@ -520,6 +526,13 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             label: 'Schemas',
             path: 'guide/forms/signals/schemas',
             contentPath: 'guide/forms/signals/schemas',
+            category: 'Signal Forms',
+            status: 'new',
+          },
+          {
+            label: 'Field metadata',
+            path: 'guide/forms/signals/field-metadata',
+            contentPath: 'guide/forms/signals/field-metadata',
             category: 'Signal Forms',
             status: 'new',
           },
@@ -936,6 +949,12 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
         path: 'ai/design-patterns',
         contentPath: 'ai/design-patterns',
       },
+      {
+        label: 'WebMCP',
+        path: 'ai/webmcp',
+        contentPath: 'ai/webmcp',
+        status: 'new',
+      },
     ],
   },
   {
@@ -1134,6 +1153,12 @@ export const DOCS_SUB_NAVIGATION_DATA: NavigationItem[] = [
             label: 'Deferred loading with @defer',
             path: 'best-practices/performance/defer',
             contentPath: 'guide/templates/defer',
+            category: 'Loading Performance',
+          },
+          {
+            label: 'Lazy loading services',
+            path: 'best-practices/performance/lazy-loading-services',
+            contentPath: 'guide/di/lazy-loading-services',
             category: 'Loading Performance',
           },
           {

@@ -16,7 +16,8 @@
   },
   "capabilities": {
     "untrustedWorkspaces": {
-      "supported": true
+      "supported": "limited",
+      "description": "Angular language features are disabled in untrusted workspaces to prevent execution of untrusted local code."
     },
     "virtualWorkspaces": {
       "supported": "limited",
@@ -407,7 +408,7 @@
   },
   "dependencies": {
     "@angular/language-service": "workspace:*",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   },
   "devDependencies": {
     "@types/jasmine": "~6.0.0",

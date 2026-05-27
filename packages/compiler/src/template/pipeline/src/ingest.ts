@@ -29,6 +29,7 @@ import {
   type ViewCompilationUnit,
 } from './compilation';
 import {BINARY_OPERATORS, namespaceForKey, prefixWithNamespace} from './conversion';
+import {MATH_ML_NAMESPACE, SVG_NAMESPACE} from './namespaces';
 
 // Schema containing DOM elements and their properties.
 const domSchema = new DomElementSchemaRegistry();
@@ -935,8 +936,19 @@ function ingestForBlock(unit: ViewCompilationUnit, forBlock: t.ForLoopBlock): vo
     }
   }
 
-  const sourceSpan = convertSourceSpan(forBlock.trackBy.span, forBlock.sourceSpan);
-  const track = convertAst(forBlock.trackBy, unit.job, sourceSpan);
+  let track: o.Expression;
+
+  if (forBlock.trackBy === null) {
+    // `@for` without a `track` is invalid and it produces a parser error.
+    // Put a placeholder here so we don't need to account for it throughout the pipeline.
+    track = o.variable('$index');
+  } else {
+    track = convertAst(
+      forBlock.trackBy,
+      unit.job,
+      convertSourceSpan(forBlock.trackBy.span, forBlock.sourceSpan),
+    );
+  }
 
   ingestNodes(repeaterView, forBlock.children);
 
@@ -1317,7 +1329,24 @@ function ingestElementBindings(
 
   for (const attr of element.attributes) {
     // Attribute literal bindings, such as `attr.foo="bar"`.
-    const securityContext = domSchema.securityContext(element.name, attr.name, true);
+    const [ns, elementName] = splitNsName(element.name);
+    let namespace = ns;
+    if (!ns) {
+      switch (op.namespace) {
+        case ir.Namespace.SVG:
+          namespace = SVG_NAMESPACE;
+          break;
+        case ir.Namespace.Math:
+          namespace = MATH_ML_NAMESPACE;
+          break;
+      }
+    }
+
+    const securityContext = domSchema.securityContext(
+      namespace ? `:${namespace}:${elementName}` : elementName,
+      attr.name,
+      true,
+    );
     bindings.push(
       ir.createBindingOp(
         op.xref,

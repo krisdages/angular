@@ -1,3 +1,224 @@
+<a name="22.0.0-rc.1"></a>
+# 22.0.0-rc.1 (2026-05-20)
+## Breaking Changes
+### router
+- The return type for `TitleStrategy.getResolvedTitleForRoute`
+  was previously 'any' while the actual return type could only be either `string`
+  or `undefined`. The return type now reflects the possible values correctly.
+  Code that reads the value may need to be adjusted.
+  
+  (cherry picked from commit ad37f52c1212164c51ffcc533067af05c2c33c89)
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [b2b8dea732](https://github.com/angular/angular/commit/b2b8dea7325c8d0d6788bbee6100d406f6ebe355) | fix | strip namespaced SVG script elements during template compilation |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [38aca8fe79](https://github.com/angular/angular/commit/38aca8fe79f47a7ad94f7c0b21f44d828e28547e) | fix | do not insert todo when migrating void @Output |
+| [1e0330d854](https://github.com/angular/angular/commit/1e0330d854b2c2d3fdb2977883cd168f9cb0a4c8) | fix | makes resource URL sanitizer lookup case-insensitive |
+| [3f6abfb167](https://github.com/angular/angular/commit/3f6abfb16791c2bfb811f355676bb768b574906a) | fix | reject script element as a dynamic component host |
+| [88d138ccc8](https://github.com/angular/angular/commit/88d138ccc84b839784f59575fddcda3fcaf18d35) | fix | support prefix-insensitive DOM schema lookups and compile-time i18n attribute validation |
+| [bfe6f6c2a5](https://github.com/angular/angular/commit/bfe6f6c2a5570cd669afa3dd8b1cd9e2d91e393a) | fix | synchronize core sanitization schema with compiler |
+| [1f71ebd788](https://github.com/angular/angular/commit/1f71ebd788af52be8d9c2ff645719390773aa107) | fix | visit ICU expressions in signal migration schematics |
+### forms
+| Commit | Type | Description |
+| -- | -- | -- |
+| [07a9358157](https://github.com/angular/angular/commit/07a935815782eb58a2109bcaacde33896e8d5d76) | perf | avoid spurious recomputation in FormField.parseErrors |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [3e7117d690](https://github.com/angular/angular/commit/3e7117d690386b079c18b435545dab96fc183305) | fix | Add strict typing on 'getResolvedTitleForRoute' |
+| [3e5ab7b470](https://github.com/angular/angular/commit/3e5ab7b470b06b63410649700b6a999e381cbb85) | fix | skip scroll-to-top on initial navigation when hydrating |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="21.2.14"></a>
+# 21.2.14 (2026-05-20)
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [68282dff9f](https://github.com/angular/angular/commit/68282dff9f9ef46540cca4bd38fc1ab739c8a783) | fix | strip namespaced SVG script elements during template compilation |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [c0f52272ed](https://github.com/angular/angular/commit/c0f52272ed337d4776bd4178cbbdc7f32037500f) | fix | do not insert todo when migrating void @Output |
+| [938a7f3edd](https://github.com/angular/angular/commit/938a7f3eddda97a39edb9edcc8b4dd970858b3a2) | fix | makes resource URL sanitizer lookup case-insensitive |
+| [0fb2724194](https://github.com/angular/angular/commit/0fb272419407a64a0a47096b03a911f4e7e83d79) | fix | reject script element as a dynamic component host |
+| [49113ac0ef](https://github.com/angular/angular/commit/49113ac0eff852d987b5acb28a9bbda0242842cd) | fix | visit ICU expressions in signal migration schematics |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [099bf577ee](https://github.com/angular/angular/commit/099bf577ee8f0bab60593a8fd2a1de7d298e3cd6) | fix | skip scroll-to-top on initial navigation when hydrating |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="22.0.0-rc.0"></a>
+# 22.0.0-rc.0 (2026-05-13)
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [c7aef8ec5d](https://github.com/angular/angular/commit/c7aef8ec5dd12b5b1d4c703a61bd1dd43f998e18) | fix | enforce parentheses containing arguments for :host-context |
+| [8a1533c9ad](https://github.com/angular/angular/commit/8a1533c9ad7c306e03d7c50676f87b56bade5bf6) | fix | preserve leading commas in animation definitions |
+| [194f723f66](https://github.com/angular/angular/commit/194f723f6620ea3cdf490b762ecbef8df6bb2c8a) | fix | remove dedicated support for legacy shadow DOM selectors |
+| [4c25a42e98](https://github.com/angular/angular/commit/4c25a42e988e7a59d4d4dc3121cd77f7b344c048) | fix | remove deprecated shadow CSS encapsulation polyfills |
+| [7dc1017e51](https://github.com/angular/angular/commit/7dc1017e517c077a6aa8fd749392a2af1277e1b7) | fix | simplify handling of colon host with a selector list |
+| [ccb7d427e4](https://github.com/angular/angular/commit/ccb7d427e4f07506c14c50ce0cbe87c57930ebb5) | fix | type check invalid for loops |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [119a19e604](https://github.com/angular/angular/commit/119a19e604a500f295867fc2cf2e6dbd43a9d807) | fix | forward BEFORE_APP_SERIALIZED errors to ErrorHandler |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="21.2.13"></a>
+# 21.2.13 (2026-05-13)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [1c6553e97d](https://github.com/angular/angular/commit/1c6553e97d9655d8c48fbf625987fae86f9cd947) | fix | disallow event attribute bindings in host bindings unconditionally |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [629905d537](https://github.com/angular/angular/commit/629905d537f59dc3c264c49f6347e3599dea0215) | fix | add `allowedHosts` option to `renderModule` and `renderApplication` |
+| [0b7192f441](https://github.com/angular/angular/commit/0b7192f4410d055191ac9b15bff57d1d0b9a644f) | fix | forward BEFORE_APP_SERIALIZED errors to ErrorHandler |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="19.2.22"></a>
+# 19.2.22 (2026-05-12)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [83a640516f](https://github.com/angular/angular/commit/83a640516f7b1fff4dfb0fd0ed8b19876bdb00c4) | fix | disallow event attribute bindings in host bindings unconditionally ([#68469](https://github.com/angular/angular/pull/68469)) |
+| [24a0103a98](https://github.com/angular/angular/commit/24a0103a9898b1547f5d1f57314e2bb6545a2c7a) | fix | validate security-sensitive attributes in i18n bindings ([#68469](https://github.com/angular/angular/pull/68469)) |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [8569db8875](https://github.com/angular/angular/commit/8569db88758d189544b03ec4474fd5334ff29346) | fix | add `allowedHosts` option to `renderModule` and `renderApplication` |
+| [837a710217](https://github.com/angular/angular/commit/837a7102172502dd3d92793ec15b2d4e533a573d) | fix | ensure origin has a trailing slash when parsing url ([#68469](https://github.com/angular/angular/pull/68469)) |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="20.3.21"></a>
+# 20.3.21 (2026-05-12)
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [f584840e2e](https://github.com/angular/angular/commit/f584840e2e50f751397cf3fad5258e18e857427e) | fix | add `allowedHosts` option to `renderModule` and `renderApplication` |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="22.0.0-next.12"></a>
+# 22.0.0-next.12 (2026-05-08)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [8ebae1de33](https://github.com/angular/angular/commit/8ebae1de330729f945391283e25661aada11b4ed) | fix | allow service with factory on abstract classes |
+| [6f525245cd](https://github.com/angular/angular/commit/6f525245cd97a934b2b5ea888ee9d52c26c58cb5) | fix | disallow event attribute bindings in host bindings unconditionally |
+### migrations
+| Commit | Type | Description |
+| -- | -- | -- |
+| [0f2160c410](https://github.com/angular/angular/commit/0f2160c4105a53ef6488d2c799dda9c0959ce7dc) | fix | remove compiler import from safe optional chaining migration |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [a451a1d66e](https://github.com/angular/angular/commit/a451a1d66ee4bf52b24b06dc9d35a7b7ae7b7eb5) | fix | add `allowedHosts` option to `renderModule` and `renderApplication` |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="22.0.0-next.11"></a>
+# 22.0.0-next.11 (2026-05-06)
+## Breaking Changes
+### forms
+- `min` and `max` validation rules no longer support
+  string values. Bound values must be numbers or null.
+## Deprecations
+### http
+- The `reportProgress` option is deprecated please use `reportUploadProgress` &  `reportDownloadProgress` instead.
+### compiler
+| Commit | Type | Description |
+| -- | -- | -- |
+| [b225a5d902](https://github.com/angular/angular/commit/b225a5d902f0ee1f6f68cde42266748cb1f2b1f8) | fix | invalid type checking code if field name needs to be quoted |
+### compiler-cli
+| Commit | Type | Description |
+| -- | -- | -- |
+| [b8d3f36ed9](https://github.com/angular/angular/commit/b8d3f36ed962bd4f5abd6bf6e55078b56ce9fffa) | feat | add support for Node.js 26.0.0 |
+| [2eae497a04](https://github.com/angular/angular/commit/2eae497a04a6a9b34397181dcd64dbd103f76c47) | feat | support external TCBs with copied content in specific mode |
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [3b0ae5fef0](https://github.com/angular/angular/commit/3b0ae5fef0328477ee0f5d51980217e7c583a606) | feat | add `provideWebMcpTools` |
+| [5a7c1e62dc](https://github.com/angular/angular/commit/5a7c1e62dc2a4fa199b85150eca66914c107a6f4) | feat | add ability to cache resources for SSR |
+| [ef1810197b](https://github.com/angular/angular/commit/ef1810197b679bfcbf21a139b930984302cbe77f) | feat | export experimental `declareWebMcpTool` support |
+| [1ab654cf28](https://github.com/angular/angular/commit/1ab654cf281559294bdd3b900ad81490cb91007f) | fix | allow explicit read generic with signal input transforms |
+| [49748b5c79](https://github.com/angular/angular/commit/49748b5c7989b4e27686798ea7935e87d804eece) | fix | enforce return type for service factory |
+| [6339d264eb](https://github.com/angular/angular/commit/6339d264eb2c00e956b504691842e49cfe365e80) | fix | i18n flags leaking on errors |
+| [7aad302c3e](https://github.com/angular/angular/commit/7aad302c3ee6e9c711ab10ae0a9e8bc66d35291c) | fix | mark service decorator as stable |
+| [4c9afb68a3](https://github.com/angular/angular/commit/4c9afb68a3447388f9ef1264888ea5dd6cb95dad) | fix | respect ngSkipHydration on components with projectable nodes in LContainers |
+| [9d7a609458](https://github.com/angular/angular/commit/9d7a609458f9d9a3f988155c9481a862c4c51eb0) | fix | validate security-sensitive attributes in i18n bindings |
+| [0ea27f4e65](https://github.com/angular/angular/commit/0ea27f4e652ddcf444b4c22a3b9643b7cc645926) | fix | visit ng-let expression value in signal migration schematics |
+### forms
+| Commit | Type | Description |
+| -- | -- | -- |
+| [7745365910](https://github.com/angular/angular/commit/7745365910771d97c91e9b640c2c26a99bfa5a6d) | feat | graduate signal forms APIs to public API |
+| [3524de29f3](https://github.com/angular/angular/commit/3524de29f34bef5df941e08e88920dffe4f880c8) | fix | Add support for range type with outside of native bounds |
+| [0ea50ffe5a](https://github.com/angular/angular/commit/0ea50ffe5adb07515867e8bf30d1abee49413003) | fix | ensure debounced async validators produce pending status during debounce |
+| [3c44d7c90b](https://github.com/angular/angular/commit/3c44d7c90b2392f7307d1b1dd0734db10ede63f5) | fix | fix orphan field error on blur during array removal |
+| [849dba6c65](https://github.com/angular/angular/commit/849dba6c6506c2696a43a3fad6ee459e17b4b6c8) | fix | implement custom control reset propagation |
+| [5835a5e3a7](https://github.com/angular/angular/commit/5835a5e3a73686473ad064f53f93d9d9acb541a6) | fix | prevent orphan field crashes in debounceSync and async validation |
+| [708631f2c4](https://github.com/angular/angular/commit/708631f2c48c146f2c6864c5edfec1d9ca4b0fe9) | fix | prohibit concurrent submits in signal forms |
+| [68c3abbe09](https://github.com/angular/angular/commit/68c3abbe09f1937081b83af3c7d82ed1a044974f) | fix | synchronize controls with the model on reset |
+| [e0536091f5](https://github.com/angular/angular/commit/e0536091f5f6c2033e377998eea3bf65b14f5ac6) | perf | optimize reactivity by using shallow array equality |
+| [9b9769479b](https://github.com/angular/angular/commit/9b9769479b295bf34bae9a938ee758a256bd4b32) | perf | shortcut deepSignal writes if value is unchanged |
+| [592a12d6c9](https://github.com/angular/angular/commit/592a12d6c947a0210020b00fd98ffa9fdaca2c20) | refactor | remove string support from min and max validation rules ([#68001](https://github.com/angular/angular/pull/68001)) |
+### http
+| Commit | Type | Description |
+| -- | -- | -- |
+| [7c8c3347ef](https://github.com/angular/angular/commit/7c8c3347efc1be2b5967b9481e3a2a3a23c24977) | refactor | Add `reportUploadProgress` &  `reportDownloadProgress` options |
+### language-service
+| Commit | Type | Description |
+| -- | -- | -- |
+| [dc9c72da9b](https://github.com/angular/angular/commit/dc9c72da9b4ca499eebf6e78d7ccc31ea6f63580) | fix | Add support for `@Input` with transforms |
+### router
+| Commit | Type | Description |
+| -- | -- | -- |
+| [c84642ac16](https://github.com/angular/angular/commit/c84642ac16bf3588c071bbdcc684daa8d4e494b3) | feat | add unmatchedInputBehavior option to componentInputBinding |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="21.2.12"></a>
+# 21.2.12 (2026-05-06)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [fe13bb669d](https://github.com/angular/angular/commit/fe13bb669d2bfab4713623d17b41c430aa0a61d8) | fix | allow explicit read generic with signal input transforms |
+| [3430251fef](https://github.com/angular/angular/commit/3430251fef93f6aec1fa9c7867e85df23f67c9a0) | fix | i18n flags leaking on errors |
+| [1aeebbe304](https://github.com/angular/angular/commit/1aeebbe3048b5aa612dd0a5448de9883ed51e7e8) | fix | respect ngSkipHydration on components with projectable nodes in LContainers |
+| [9e38ed7d57](https://github.com/angular/angular/commit/9e38ed7d5773a9193ba07afdba3f7a9f2fe02d18) | fix | sanitizer typings |
+| [7a05a9a71a](https://github.com/angular/angular/commit/7a05a9a71a5ab75042ec5560c01526de6e61e062) | fix | validate security-sensitive attributes in i18n bindings |
+| [c37f6ca42f](https://github.com/angular/angular/commit/c37f6ca42f263353cb9563fa90d7b31d3c7837ca) | fix | visit ng-let expression value in signal migration schematics |
+### forms
+| Commit | Type | Description |
+| -- | -- | -- |
+| [03ad53863b](https://github.com/angular/angular/commit/03ad53863bf3c368f0f02a4322d4141e8f70f674) | fix | prohibit concurrent submits in signal forms |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
+<a name="20.3.20"></a>
+# 20.3.20 (2026-05-06)
+### core
+| Commit | Type | Description |
+| -- | -- | -- |
+| [a9bcffdbc7](https://github.com/angular/angular/commit/a9bcffdbc7697715f3d4fa91d924a5b905d637b0) | fix | disallow event attribute bindings in host bindings unconditionally ([#68468](https://github.com/angular/angular/pull/68468)) |
+| [97eeb45cfa](https://github.com/angular/angular/commit/97eeb45cfa5fbd89013d75b5d862095d34b8ba58) | fix | validate security-sensitive attributes in i18n bindings ([#68468](https://github.com/angular/angular/pull/68468)) |
+### platform-server
+| Commit | Type | Description |
+| -- | -- | -- |
+| [25e4e07238](https://github.com/angular/angular/commit/25e4e07238021a3641f96bb5f5648d74a83f1712) | fix | ensure origin has a trailing slash when parsing url ([#68468](https://github.com/angular/angular/pull/68468)) |
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="22.0.0-next.10"></a>
 # 22.0.0-next.10 (2026-04-29)
 ### common

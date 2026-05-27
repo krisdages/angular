@@ -2186,6 +2186,142 @@ runInEachFileSystem(() => {
       );
     });
 
+    describe('foreign component template semantics', () => {
+      const foreignSetupCode = `
+        // We must redeclare foreignImports and ForeignComponent to test them since they are marked @internal.
+        declare module '@angular/core' {
+          export interface ForeignComponent {}
+          export function foreignImport(render: Function): ForeignComponent;
+
+          interface Component {
+            foreignImports?: ForeignComponent[];
+          }
+        }
+
+        import {Component, ForeignComponent, foreignImport} from '@angular/core';
+
+
+        function FancyButton() {}
+
+        function frameworkImport(component: unknown): ForeignComponent {
+          return foreignImport(() => {});
+        }
+      `;
+
+      it('should detect an unsupported event binding on a foreign component', () => {
+        env.write(
+          'test.ts',
+          `
+          ${foreignSetupCode}
+
+          @Component({
+            selector: 'test',
+            template: '<FancyButton (click)="click()"></FancyButton>',
+            foreignImports: [frameworkImport(FancyButton)],
+          })
+          export class TestCmp {
+            click() {}
+          }
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toEqual(1);
+        expect(diags[0].code).toEqual(ngErrorCode(ErrorCode.FOREIGN_COMPONENT_UNSUPPORTED_BINDING));
+        expect(diags[0].messageText).toEqual('Foreign components do not support event bindings.');
+        expect(getSourceCodeForDiagnostic(diags[0])).toEqual(
+          '<FancyButton (click)="click()"></FancyButton>',
+        );
+      });
+
+      it('should detect an unsupported template reference on a foreign component', () => {
+        env.write(
+          'test.ts',
+          `
+          ${foreignSetupCode}
+
+          @Component({
+            selector: 'test',
+            template: '<FancyButton #btn></FancyButton>',
+            foreignImports: [frameworkImport(FancyButton)],
+          })
+          export class TestCmp {}
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toEqual(1);
+        expect(diags[0].code).toEqual(ngErrorCode(ErrorCode.FOREIGN_COMPONENT_UNSUPPORTED_BINDING));
+        expect(diags[0].messageText).toEqual('Foreign components do not support references.');
+        expect(getSourceCodeForDiagnostic(diags[0])).toEqual('<FancyButton #btn></FancyButton>');
+      });
+
+      it('should detect unsupported non-property bindings on a foreign component', () => {
+        env.write(
+          'test.ts',
+          `
+          ${foreignSetupCode}
+
+          @Component({
+            selector: 'test',
+            template: '<FancyButton [class.blue]="true"></FancyButton>',
+            foreignImports: [frameworkImport(FancyButton)],
+          })
+          export class TestCmp {}
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toEqual(1);
+        expect(diags[0].code).toEqual(ngErrorCode(ErrorCode.FOREIGN_COMPONENT_UNSUPPORTED_BINDING));
+        expect(diags[0].messageText).toEqual(
+          'Foreign components only support static attributes and property bindings.',
+        );
+        expect(getSourceCodeForDiagnostic(diags[0])).toEqual(
+          '<FancyButton [class.blue]="true"></FancyButton>',
+        );
+      });
+
+      it('should allow static attributes and property bindings on a foreign component', () => {
+        env.write(
+          'test.ts',
+          `
+          ${foreignSetupCode}
+
+          @Component({
+            selector: 'test',
+            template: '<FancyButton title="Click me" [disabled]="false"></FancyButton>',
+            foreignImports: [frameworkImport(FancyButton)],
+          })
+          export class TestCmp {}
+        `,
+        );
+        const diags = env.driveDiagnostics();
+        expect(diags.length).toEqual(0);
+      });
+
+      it('should support import aliases for matching foreign components', () => {
+        env.write(
+          'original.ts',
+          `
+          export function Original() {}
+          `,
+        );
+        env.write(
+          'test.ts',
+          `
+          ${foreignSetupCode}
+          import {Original as Alias} from './original';
+
+          @Component({
+            selector: 'test',
+            template: '<Alias />',
+            foreignImports: [frameworkImport(Alias)],
+          })
+          export class TestCmp {}
+        `,
+        );
+        env.driveMain();
+      });
+    });
+
     it('should detect a duplicate variable declaration', () => {
       env.write(
         'test.ts',
@@ -6571,6 +6707,32 @@ suppress
         const diags = env.driveDiagnostics();
         expect(diags.map((d) => ts.flattenDiagnosticMessageText(d.messageText, ''))).toEqual([
           `Type 'number' is not assignable to type 'string'.`,
+        ]);
+      });
+
+      it('should type check a @for loop without a `track` expression', () => {
+        env.write(
+          'test.ts',
+          `
+          import {Component} from '@angular/core';
+
+          @Component({
+            template: \`
+              @for (item of items) {
+                {{does_not_exist}}
+              }
+            \`,
+          })
+          export class Main {
+            items = [];
+          }
+        `,
+        );
+
+        const diags = env.driveDiagnostics();
+        expect(diags.map((d) => ts.flattenDiagnosticMessageText(d.messageText, ''))).toEqual([
+          `Property 'does_not_exist' does not exist on type 'Main'.`,
+          `@for loop must have a "track" expression`,
         ]);
       });
     });

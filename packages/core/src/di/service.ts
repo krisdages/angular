@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
-import {Type} from '../interface/type';
+import {AbstractType, Type} from '../interface/type';
 import {makeDecorator, TypeDecorator} from '../util/decorators';
 import {compileService} from './jit/service';
 
@@ -30,13 +30,23 @@ export interface ServiceDecorator {
    * When `autoProvided` is set to `false`, the service won't be exposed to the dependency
    * injection system automatically. It is up to the user to expose it in a providers list.
    */
-  (options?: {autoProvided: false}): TypeDecorator;
+  (options: {autoProvided: false}): TypeDecorator;
 
   /**
-   * Creates a service that is automatically provided. Passing an optional
-   * `factory` allows for the runtime value to be replaced.
+   * Creates a service that is automatically provided and uses
+   * the value returned from the `factory` function.
    */
-  (options?: {autoProvided?: true; factory?: () => unknown}): TypeDecorator;
+  <T>(options: {
+    autoProvided?: true;
+    factory: () => T;
+  }): <C extends Type<unknown> | AbstractType<unknown>>(
+    target: C,
+  ) => C extends Type<unknown> ? Type<T> : abstract new (...args: any[]) => T;
+
+  /**
+   * Creates a service that is automatically provided.
+   */
+  (options?: {autoProvided?: true}): TypeDecorator;
 }
 
 /**

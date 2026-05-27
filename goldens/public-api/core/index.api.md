@@ -189,6 +189,7 @@ export interface AttributeDecorator {
 export interface BaseResourceOptions<T, R> {
     defaultValue?: NoInfer<T>;
     equal?: ValueEqualityFn<T>;
+    id?: string;
     injector?: Injector;
     params?: (ctx: ResourceParamsContext) => R;
 }
@@ -538,6 +539,9 @@ export class DebugNode {
         [key: string]: any;
     };
 }
+
+// @public
+export function declareExperimentalWebMcpTool<const InputSchema extends JsonSchemaForInference>(tool: WebMcpToolDescriptor<InputSchema>, injector?: Injector): void;
 
 // @public
 export const DEFAULT_CURRENCY_CODE: InjectionToken<string>;
@@ -1164,6 +1168,7 @@ export class KeyValueDiffers {
 export function linkedSignal<D>(computation: () => D, options?: {
     equal?: ValueEqualityFn<NoInfer<D>>;
     debugName?: string;
+    set?: (value: NoInfer<D>, rawSet: (value: NoInfer<D>) => void) => void;
 }): WritableSignal<D>;
 
 // @public
@@ -1175,6 +1180,7 @@ export function linkedSignal<S, D>(options: {
     }) => D;
     equal?: ValueEqualityFn<NoInfer<D>>;
     debugName?: string;
+    set?: (value: NoInfer<D>, rawSet: (value: NoInfer<D>) => void) => void;
 }): WritableSignal<D>;
 
 // @public
@@ -1496,6 +1502,9 @@ export function provideCheckNoChangesConfig(options: {
 export function provideEnvironmentInitializer(initializerFn: () => void): EnvironmentProviders;
 
 // @public
+export function provideExperimentalWebMcpTools<const InputSchema extends JsonSchemaForInference>(tools: WebMcpToolDescriptor<InputSchema>[]): EnvironmentProviders;
+
+// @public
 export function provideIdleServiceWith(useExisting: AbstractType<IdleService> | InjectionToken<IdleService>): EnvironmentProviders;
 
 // @public
@@ -1681,7 +1690,7 @@ export interface ResourceLoaderParams<R> {
     };
 }
 
-// @public (undocumented)
+// @public
 export type ResourceOptions<T, R> = (PromiseResourceOptions<T, R> | StreamingResourceOptions<T, R>) & {
     debugName?: string;
 };
@@ -1727,7 +1736,7 @@ export type ResourceStatus = 'idle' | 'error' | 'loading' | 'reloading' | 'resol
 // @public
 export type ResourceStreamingLoader<T, R> = (param: ResourceLoaderParams<R>) => Signal<ResourceStreamItem<T>> | PromiseLike<Signal<ResourceStreamItem<T>>> | undefined;
 
-// @public (undocumented)
+// @public
 export type ResourceStreamItem<T> = {
     value: T;
 } | {
@@ -1762,6 +1771,8 @@ export interface SchemaMetadata {
 
 // @public
 export enum SecurityContext {
+    // (undocumented)
+    ATTRIBUTE_NO_BINDING = 6,
     // (undocumented)
     HTML = 1,
     // (undocumented)
@@ -1802,12 +1813,15 @@ export const Service: ServiceDecorator;
 // @public
 export interface ServiceDecorator {
     (): TypeDecorator;
-    (options?: {
+    (options: {
         autoProvided: false;
     }): TypeDecorator;
+    <T>(options: {
+        autoProvided?: true;
+        factory: () => T;
+    }): <C extends Type<unknown> | AbstractType<unknown>>(target: C) => C extends Type<unknown> ? Type<T> : abstract new (...args: any[]) => T;
     (options?: {
         autoProvided?: true;
-        factory?: () => unknown;
     }): TypeDecorator;
 }
 
@@ -2117,6 +2131,22 @@ export abstract class ViewRef extends ChangeDetectorRef {
     abstract get destroyed(): boolean;
     abstract onDestroy(callback: Function): void;
 }
+
+// @public
+export interface WebMcpClient {
+    signal: AbortSignal;
+}
+
+// @public
+export interface WebMcpToolDescriptor<InputSchema extends JsonSchemaForInference> {
+    description?: string;
+    execute: WebMcpToolExecute<InputSchema>;
+    inputSchema: InputSchema;
+    name: string;
+}
+
+// @public
+export type WebMcpToolExecute<InputSchema extends JsonSchemaForInference> = (args: InferArgsFromInputSchema<InputSchema>, client: WebMcpClient) => unknown;
 
 // @public
 export interface WritableResource<T> extends Resource<T> {

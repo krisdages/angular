@@ -25,6 +25,8 @@ import {Environment} from './environment';
 import {ensureTypeCheckFilePreparationImports} from './tcb_util';
 import {adaptTypeCheckBlockMetadata} from './tcb_adapter';
 
+export const TCB_FUNCTION_PREFIX = '_tcb';
+
 /**
  * An `Environment` representing the single type-checking file into which most (if not all) Type
  * Check Blocks (TCBs) will be generated.
@@ -79,7 +81,7 @@ export class TypeCheckFile extends Environment {
     genericContextBehavior: TcbGenericContextBehavior,
     reflector: ReflectionHost,
   ): void {
-    const fnId = `_tcb${this.nextTcbId++}`;
+    const fnId = `${TCB_FUNCTION_PREFIX}${this.nextTcbId++}`;
     const {tcbMeta, component} = adaptTypeCheckBlockMetadata(
       ref,
       meta,
@@ -117,6 +119,9 @@ export class TypeCheckFile extends Environment {
 
     const newImports = importChanges.newImports.get(this.contextFile.fileName);
     if (newImports !== undefined) {
+      if (source.length > 0 && !source.endsWith('\n')) {
+        source += '\n';
+      }
       source += newImports
         .map((i) => printer.printNode(ts.EmitHint.Unspecified, i, this.contextFile))
         .join('\n');
